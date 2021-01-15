@@ -1,0 +1,41 @@
+{
+  "name": "spoogle",
+  "version": "1.0.0",
+  "description": "An app that optimizes the time you spend finding the perfect tunes",
+  "main": "client/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node server/server.js",
+    "build": "cross-env NODE_ENV=production webpack",
+    "dev-mac": "NODE_ENV=development webpack serve --open & nodemon server/server.js",
+    "dev-windows": "concurrently \"cross-env NODE_ENV=development webpack serve --open\" \"nodemon server/server.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tasselled-Wobbegongs/spoogle.git"
+  },
+  "author": "GASK",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tasselled-Wobbegongs/spoogle/issues"
+  },
+  "homepage": "https://github.com/Tasselled-Wobbegongs/spoogle#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.0.1",
+    "nodemon": "^2.0.7",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.15.0",
+    "webpack-cli": "^4.3.1",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "express": "^4.17.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}
