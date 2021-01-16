@@ -1,9 +1,8 @@
 const fetch = require("node-fetch");
-const spotController = {};
+const querystring = require('query-string')
+const { client_id, client_secret, redirect_uri } = require('spotifysecret')
 
-const client_id = 'cc4f085fa7444ed6a9f2673da73ca71c';
-const client_secret = '576f34942b7e4a0f97c8d511a6e51951'; 
-const redirect_uri = 'http://localhost:3000/callback'
+const spotController = {};
 
 const generateRandomString = function(length) {
     let text = '';
@@ -28,6 +27,14 @@ spotController.reqAuth = (req, res, next) => {
     res.locals.client_id = client_id;
     res.locals.client_secret = client_secret;
     res.locals.redirect_uri = redirect_uri;
+    const spotifyRedirect = 'https://accounts.spotify.com/authorize?' + querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: res.localsscope,
+      redirect_uri: redirect_uri,
+      state: res.locals.state
+    })
+    res.locals.spotRedirect = spotifyRedirect;
     next();
   };
 
