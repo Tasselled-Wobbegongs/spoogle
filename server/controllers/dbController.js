@@ -4,17 +4,18 @@ const db = require('../models/dbModels.js');
 // defining an empty object literal, will be populated while this file executes, then exported
 const dbController = {};
 
-// capture everything currently in the user table (nonexistent at the moment)
+// capture everything currently in the users
 dbController.allUsers = (req, res, next) => {
 
     // query string to select everything from user table
-    const getAllQuery = 'SELECT * FROM user'
+    const getAllQuery = 'SELECT * FROM users'
 
     // submitting the query string to the database
     db.query(getAllQuery)
 
     // if successful, capture the db specific response
     .then(response => {
+        res.locals = response
         next()
     })
 
