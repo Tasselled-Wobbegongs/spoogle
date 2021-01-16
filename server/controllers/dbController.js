@@ -15,7 +15,7 @@ dbController.allUsers = (req, res, next) => {
 
     // if successful, capture the db specific response
     .then(response => {
-        res.locals = response
+        res.locals.all = response.rows
         next()
     })
 

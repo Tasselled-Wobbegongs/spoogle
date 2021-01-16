@@ -1,7 +1,7 @@
 const { Pool } = require('pg')
 
 // string from elephantSQL
-const PG_URI = 'postgres://spnejdcl:H3a9Z7...@lallah.db.elephantsql.com:5432/spnejdcl'
+const PG_URI = 'postgres://spnejdcl:H3a9Z7hJwE2Jo4Xa0645Pa7TFrqh6zTA@lallah.db.elephantsql.com:5432/spnejdcl'
 
 // creating a pool
 const pool = new Pool({

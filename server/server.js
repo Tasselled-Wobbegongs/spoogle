@@ -5,13 +5,12 @@ const app = express();
 
 const PORT = 3000;
 
-// const apiRouter = require('./routes/api');
 
 // handle parsing request body
 app.use(express.json())
-  .use(express.static(__dirname + '/public'))
-  // .use(cors())
-  .use(cookieParser());
+    .use(express.static(__dirname + '/public'))
+    // .use(cors())
+    .use(cookieParser());
 // handle get requests to homepage, will serve index.html
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));
@@ -19,12 +18,12 @@ app.get('/', (req, res) => {
 
 //    *ROUTE HANDLERS*
 // Require the routers
-// const apiDBRouter = require('./routes/apiDB')
+const apiDBRouter = require('./routes/apiDB')
 const apiSpotRouter = require('./routes/apiSpot')
 // Spotify Api router calls.
 app.use('/apiSpot', apiSpotRouter);
 // Database API Router Calls
-// app.use('/apiDB', apiDBRouter);
+app.use('/apiDB', apiDBRouter);
 
 
 
