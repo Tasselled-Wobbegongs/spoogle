@@ -8,9 +8,11 @@ const PORT = 3000;
 
 // handle parsing request body
 app.use(express.json())
-    .use(express.static(__dirname + '/public'))
-    // .use(cors())
-    .use(cookieParser());
+app.use(express.static(__dirname + '/public'))
+  // .use(cors())
+app.use(cookieParser())
+app.use(express.urlencoded({extended: true}))
+
 // handle get requests to homepage, will serve index.html
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, '../index.html'));

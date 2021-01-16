@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const querystring = require('query-string')
-const { client_id, client_secret, redirect_uri } = require('./spotifysecret.js')
+const { client_id, client_secret, redirect_uri } = require('./spotifysecret')
+
 
 const spotController = {};
 
@@ -125,20 +126,25 @@ spotController.refreshToken = (req, res, next) => {
     });
   };
 
-spotController.getToken = (req, res, next) => {
 
+console.log('Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')));
+
+spotController.getToken = (req, res, next) => {
+  const BasicKey = (new Buffer(client_id + ':' + client_secret).toString('base64'))
   fetch('https://accounts.spotify.com/api/token', {
     method:'POST', 
-    headers:{'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')), "Content-Type": "application/x-www-form-urlencoded"}, 
+    headers:{'Authorization': 'Basic ' + BasicKey, "Content-Type": "application/x-www-form-urlencoded"}, 
     body: 'grant_type=client_credentials' })
-    .then( data => JSON.stringify(data))
-    .then( result => (console.log(result), res.locals.authToken = result, next()));
+    .then( data => data.text())
+    .then( json => JSON.parse(json)) 
+    .then( result => (res.locals.authToken = result.access_token, next()));
 }
 
 spotController.getTrack = (req, res, next) => {
-    fetch('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl?market=ES', {headers: {'Authorization': res.locals.authToken}})
-        .then( results => JSON.stringify(results))
-        .then( parsedData => (res.locals.track = parsedData, next()))
+  console.log(res.locals.authToken, "AT 142")
+    fetch('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl?market=ES', {headers: {'Authorization': "Bearer " + res.locals.authToken}})
+        .then( results => results.text())
+        .then( parsedData => (console.log(parsedData, "PD 144"), res.locals.track = parsedData, next()))
         .catch( err => next(err));
 };
 
