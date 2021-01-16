@@ -1,3 +1,6 @@
+# Secret Stuff
+spotifysecret.js
+
 # Logs
 logs
 *.log
@@ -105,3 +108,6 @@ dist
 
 # Lock
 package-lock.json
+
+# secret info from spotify
+server/controllers/spotifysecret.js
