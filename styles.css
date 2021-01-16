@@ -1,0 +1,15 @@
+/* ------------ SEARCH RESULTS ------------ */
+
+body {
+  font-family: sans-serif;
+}
+
+.results-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.results-row img {
+  width: 50px;
+}
