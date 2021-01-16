@@ -5,7 +5,7 @@ const dbController = require('../controllers/apiDB');
 
 // respond with every user currently in database
 router.get('/', 
-    usedCarController.allUsers,
+    dbController.allUsers,
     (req, res) => res.status(200).json({})
 )
 
