@@ -1,9 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 const getAlbumCover = (track) => {
   const albumImages = track.album.images;
   return albumImages[albumImages.length - 1].url;
+}
+
+const getArtists = (track) => {
+  let artists = '';
+  track.artists.forEach((artist, index) => {
+    artists += artist.name;
+    if (index !== track.artists.length - 1) {
+      artists += ', '
+    }
+  });
+  return artists;
 }
 
 const convertDuration = (durationInMs) => {
@@ -14,22 +24,29 @@ const convertDuration = (durationInMs) => {
   return `${minutes}:${seconds}`;
 }
 
-const SearchResultRow = ({ track }) => {
-  let artists = '';
-  track.artists.forEach((artist, index) => {
-    artists += artist.name;
-    if (index !== track.artists.length - 1) {
-      artists += ', '
-    }
-  });
+const SearchResultRow = ({ track, favorites, toggleFavorite }) => {
+  const isFavorite = favorites.indexOf(track.id) > -1;
 
   return (
     <div className="results-row">
-      <div><img src={getAlbumCover(track)} /></div>
-      <div>{track.name}</div>
-      <div>{artists}</div>
-      <div>{track.audio_features.tempo}</div>
-      <div>{convertDuration(track.duration_ms)}</div>
+      <div className="album-col">
+        <div>&#9658;</div>
+        <img src={getAlbumCover(track)} />
+        </div>
+      <div className="track-col">
+        <div>{track.name}</div>
+        <div>by {getArtists(track)}</div>
+      </div>
+      <div className="bpm-col">{Math.floor(track.audio_features.tempo) + ' BPM'}</div>
+      <div className="duration-col">{convertDuration(track.duration_ms)}</div>
+      <div
+        className={`like-col ${isFavorite ? "favorite" : ""}`}
+        onClick={(e) => { toggleFavorite(track.id, isFavorite) }}
+      >
+        <svg height="20" viewBox="0 0 48 48" width="20">
+          <path></path>
+        </svg>
+      </div>
     </div>
   );
 }
