@@ -2,96 +2,51 @@ import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import Dropdown from './Dropdown.jsx'
 
-
-// const handleDropdown = (e) => {
-//   e.preventDefault();
-//   /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
-//   document.getElementById("tempoDropdown").classList.toggle("show");
-//   // Close the dropdown if the user clicks outside of it
-//   window.onclick = function(e) {
-//     if (!e.target.matches('.dropbtn')) {
-//       var tempDropdown = document.getElementById("tempoDropdown");
-//     if (tempoDropdown.classList.contains('show')) {
-//       tempoDropdown.classList.remove('show');
-//       }
-//     }
-//   }
-//   // send search params to server
-//   // server responds with array of tracks, "data"
-// }
-
-
 class SearchBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchParameters : ["target_danceability", "target_acousticness", "target_popularity", "target_valence", "target_tempo", "target_duration_ms"]
+      values: [[0,100],[0,100],[0,220],[0,100],[0,100],[0,15]],
+      searchParameters : [ 
+        {spotifyName: "target_danceability", displayName: "Danceability",description: "A little side-step or in the mood to salsa?",min: 0,max: 100,},
+        {spotifyName: "target_acousticness",displayName: "Acousticness",description: "Coffee shop vibes or a raging concert?",min: 0,max: 100,},
+        {spotifyName: "target_tempo", displayName: "Tempo",description: "Still your heart or get the adrenaline pumping?",min: 0,max: 220,},
+        {spotifyName: "target_valence", displayName: "Valence",description: "Down in the dumps or feeling euphoric?",min: 0,max: 100,},
+        {spotifyName: "target_popularity", displayName: "Popularity",description: "Explore new artists or in with the radio tunes?",min: 0,max: 100,},
+        {spotifyName: "target_duration_ms", displayName: "Duration",description: "Just a quickie or a marathon?",min: 0,max: 15,}
+      ]
     }
+    this.handleChange = this.handleChange.bind(this);
   };
 
+  convertDuration(minutes, seconds) {
+    let millies = ((minutes*60)+seconds)*60;
+    return `${millies}`;
+  }
+   handleChange(event, newValue) {
+    const newValues = this.state.values;
+    newValues[event.target.id]=newValue;
+    console.log(newValues)
+    this.setState({...this.state, values:newValues});
+  };
+  
   render() {
+    console.log(this.state.values[0])
     const dropdowns = [];
     
     for (let i = 0; i < this.state.searchParameters.length; i += 1) {
-      dropdowns.push(<Dropdown dropdownName={this.state.searchParameters[i]}/>);
+      dropdowns.push(<Dropdown key={'slider'+i} id={i} parameterObj={this.state.searchParameters[i]} values={this.state.values[i]} onChangeFunc={this.handleChange} />);
     }
 
     return (
       <Fragment>
-      <form onSubmit={this.props.handleSubmit}>
+      {/* <form onSubmit={this.props.handleSubmit}> */}
+      <form>
         <input name='artist' type='text'></input> 
         <input type='submit' value='spoogle'></input> 
       </form>
+      <div className="searchParams">
       {dropdowns}
-      {/* <div className="dropdown" style={{float: "left"}}>
-        <button className="dropbtn">Danceability</button>
-        <div className="dropdown-content" style={{left:0}}>
-          <a href="#">Still as a Rock</a>
-          <a href="#">Give a Little Sway</a>
-          <a href="#"></a>
-          <a href="#">Grooving Out</a>
-          <a href="#">Spaz Out</a>
-        </div>
-      </div> */}
-      <div className="dropdown" style={{float: "left"}}>
-        <button className="dropbtn">Duration</button>
-        <div className="dropdown-content" style={{left:0}}>
-          <a href="#">20-50 BPM</a>
-          <a href="#">50-80 BPM</a>
-          <a href="#">80-120 BPM</a>
-          <a href="#">120-170 BPM</a>
-          <a href="#">170-200 BPM</a>
-        </div>
-      </div>
-      <div className="dropdown" style={{float: "left"}}>
-        <button className="dropbtn">Popularity</button>
-        <div className="dropdown-content" style={{left:0}}>
-          <a href="#">20-50 BPM</a>
-          <a href="#">50-80 BPM</a>
-          <a href="#">80-120 BPM</a>
-          <a href="#">120-170 BPM</a>
-          <a href="#">170-200 BPM</a>
-        </div>
-      </div>
-      <div className="dropdown" style={{float: "left"}}>
-        <button className="dropbtn">Tempo</button>
-        <div className="dropdown-content" style={{left:0}}>
-          <a href="#">20-50 BPM</a>
-          <a href="#">50-80 BPM</a>
-          <a href="#">80-120 BPM</a>
-          <a href="#">120-170 BPM</a>
-          <a href="#">170-200 BPM</a>
-        </div>
-      </div>
-      <div className="dropdown" style={{float: "left"}}>
-        <button className="dropbtn">Valence</button>
-        <div className="dropdown-content" style={{left:0}}>
-          <a href="#">20-50 BPM</a>
-          <a href="#">50-80 BPM</a>
-          <a href="#">80-120 BPM</a>
-          <a href="#">120-170 BPM</a>
-          <a href="#">170-200 BPM</a>
-        </div>
       </div>
       </Fragment>
     )
@@ -99,32 +54,6 @@ class SearchBar extends Component {
 }
 
 
-    {/* <div className="dropdown">
-      <button className="dropbtn" onClick={handleDropdown}>Tempo</button>
-      <div id="tempoDropdown" className="dropdown-content">
-        <a href="#">20-50 BPM</a>
-        <a href="#">50-80 BPM</a>
-        <a href="#">80-120 BPM</a>
-        <a href="#">120-170 BPM</a>
-        <a href="#">170-200 BPM</a>
-      </div>  
-    </div> */}
-
-
-// const TempoDropDown = () => {
-//   return (
-//     <div className="dropdown">
-//       <button className="dropbtn" onClick={handleDropdown}>Tempo</button>
-//       <div id="tempoDropdown" className="dropdown-content">
-//         <a href="#">20-50 BPM</a>
-//         <a href="#">50-80 BPM</a>
-//         <a href="#">80-120 BPM</a>
-//         <a href="#">120-170 BPM</a>
-//         <a href="#">170-200 BPM</a>
-//       </div>  
-//     </div>
-//   )
-// }  
 
 
 export default SearchBar;
