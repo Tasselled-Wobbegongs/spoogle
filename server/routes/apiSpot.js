@@ -16,6 +16,8 @@ router.get('/login', spotController.reqAuth, (req, res) =>  res.redirect(res.loc
 router.get('/callback/', (req, res) => (console.log('YAYAYA'), res.status(200).json('YOOOOOO')));
 
 // router.get('/refresh_token');
-router.get('/rec/', spotController.getToken, spotController.getRecs, spotController.getSpecs, (req, res) => res.status(200).json(res.locals.track));
+router.get('/rec/', spotController.getToken, spotController.getRecs, spotController.getSpecs, (req, res) => {
+  res.status(200).json(res.locals.queryResults);
+});
 
-module.exports = router; 
+module.exports = router;
