@@ -2,6 +2,7 @@ import React, { useState, Fragment } from 'react';
 import ReactDOM from 'react-dom';
 import './../../styles.css';
 import SearchResultRow from './SearchResultRow.jsx';
+import SearchBar from './SearchBar.jsx'
 import sampleTracks from './sampleTracks';
 
 const App = () => {
@@ -19,13 +20,14 @@ const App = () => {
     }
   }
 
-  const resultsRows = results.map(track => (
-    <SearchResultRow track={track} favorites={favorites} toggleFavorite={toggleFavorite} />
+  const resultsRows = results.map( (track, index) => (
+    <SearchResultRow  key={`searchResult${index}`} track={track} favorites={favorites} toggleFavorite={toggleFavorite} />
   ));
 
   return (
-    <Fragment>
+    <Fragment key='appfragment'>
       <div className="results-grid">
+        <SearchBar key='searchbar1' />
         {resultsRows}
       </div>
     </Fragment>
