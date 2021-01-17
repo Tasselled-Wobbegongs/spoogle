@@ -16,14 +16,14 @@ function valuetext(value) {
 
 export default function Dropdown(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState([props.parameterObj.max*0.2, props.parameterObj.max*.8]);
+  const [value, setValue] = React.useState([props.parameterObj.min, props.parameterObj.max]);
 
   const handleChange = (event, newValue) => {
     props.onChangeFunc(event, newValue)
     setValue(newValue);
   };
   return (
-    <div className={classes.root}>
+    <div className="sliding">
       <Typography id="range-slider" className="tooltip" gutterBottom>
         {props.parameterObj.displayName}
         <span className="tooltiptext">{props.parameterObj.description}</span>

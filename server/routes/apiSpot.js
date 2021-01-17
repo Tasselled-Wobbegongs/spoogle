@@ -11,11 +11,11 @@ const router = express.Router();
  */
 
 
-router.get('/login', spotController.reqAuth, (req, res) =>  res.redirect(res.locals.spotredirect));
+router.get('/login', spotController.reqAuth, (req, res) =>  res.redirect(res.locals.spotRedirect));
 
-router.get('/callback', (req, res) => console.log('YAYAYA'));
+router.get('/callback/', (req, res) => (console.log('YAYAYA'), res.status(200).json('YOOOOOO')));
 
 // router.get('/refresh_token');
-router.get('/track', spotController.getToken, spotController.getTrack, (req, res) => res.status(200).json(res.locals.track));
+router.get('/rec/', spotController.getToken, spotController.getRecs, spotController.getSpecs, (req, res) => res.status(200).json(res.locals.track));
 
 module.exports = router; 

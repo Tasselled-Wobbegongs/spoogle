@@ -15,36 +15,37 @@ const generateRandomString = function(length) {
     return text;
 };
   
-const stateKey = 'spotify_auth_state';
 
 spotController.reqAuth = (req, res, next) => {
+  console.log('YAY')
+  const stateKey = 'spotify_auth_state';
 
-    const state = generateRandomString(16);
-    res.cookie(stateKey, state);
-  
-    // your application requests authorization
-    const scope = 'user-read-private user-read-email';
-    res.locals.scope = scope;
-    res.locals.client_id = client_id;
-    res.locals.client_secret = client_secret;
-    res.locals.redirect_uri = redirect_uri;
-    const spotifyRedirect = 'https://accounts.spotify.com/authorize?' + querystring.stringify({
-      response_type: 'code',
-      client_id: client_id,
-      scope: res.localsscope,
-      redirect_uri: redirect_uri,
-      state: res.locals.state
-    })
-    res.locals.spotRedirect = spotifyRedirect;
-    next();
-  };
+  const state = generateRandomString(16);
+  res.cookie(stateKey, state);
+
+  // your application requests authorization
+  const scope = 'user-read-private user-read-email';
+
+  const spotifyRedirect = 'https://accounts.spotify.com/authorize?' + querystring.stringify({
+    response_type: 'code',
+    client_id: client_id,
+    scope: scope,
+    redirect_uri: 'http://localhost:3000/apiSpot/callback',
+    state: state
+  })
+
+
+  res.locals.spotRedirect = spotifyRedirect;
+  console.log(res.locals.spotRedirect, "URI")
+  next();
+};
 
 
 spotController.getAuth = (req, res, next) => {
 
     // your application requests refresh and access tokens
     // after checking the state parameter
-  
+    const stateKey = 'spotify_auth_state';
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;
@@ -127,26 +128,32 @@ spotController.refreshToken = (req, res, next) => {
   };
 
 
-console.log('Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')));
-
 spotController.getToken = (req, res, next) => {
-  const BasicKey = (new Buffer(client_id + ':' + client_secret).toString('base64'))
+  const BasicKey = (Buffer.from(client_id + ':' + client_secret).toString('base64'))
   fetch('https://accounts.spotify.com/api/token', {
     method:'POST', 
     headers:{'Authorization': 'Basic ' + BasicKey, "Content-Type": "application/x-www-form-urlencoded"}, 
     body: 'grant_type=client_credentials' })
-    .then( data => data.text())
+    .then( data => data.text()) 
     .then( json => JSON.parse(json)) 
     .then( result => (res.locals.authToken = result.access_token, next()));
 }
 
-spotController.getTrack = (req, res, next) => {
-  console.log(res.locals.authToken, "AT 142")
-    fetch('https://api.spotify.com/v1/tracks/11dFghVXANMlKmJXsNCbNl?market=ES', {headers: {'Authorization': "Bearer " + res.locals.authToken}})
+spotController.getRecs = (req, res, next) => {
+  // console.log(res.locals.authToken)
+  const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
+    fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
         .then( results => results.text())
-        .then( parsedData => (console.log(parsedData, "PD 144"), res.locals.track = parsedData, next()))
+        // .then( data => JSON.parse(data))
+        .then( parsedData => (res.locals.queryResults = parsedData, next()))
         .catch( err => next(err));
 };
+
+spotController.getSpecs = (req, res, next) => {
+  // JSON.stringify()
+  console.log(res.locals.queryResults, "testing")
+  return next();
+}
 
 
 module.exports = spotController;
