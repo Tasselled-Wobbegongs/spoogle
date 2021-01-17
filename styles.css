@@ -15,7 +15,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  column-gap: 14px;
+  column-gap: 20px;
   max-width: 800px;
   border-bottom: 1px solid var(--border-color);
   height: 60px;

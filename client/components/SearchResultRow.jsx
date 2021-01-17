@@ -32,12 +32,12 @@ const SearchResultRow = ({ track, favorites, toggleFavorite }) => {
       <div className="album-col">
         <div>&#9658;</div>
         <img src={getAlbumCover(track)} />
-        </div>
+      </div>
       <div className="track-col">
         <div>{track.name}</div>
         <div>by {getArtists(track)}</div>
       </div>
-      <div className="bpm-col">{Math.floor(track.audio_features.tempo) + ' BPM'}</div>
+      {/* <div className="bpm-col">{Math.floor(track.audio_features.tempo) + ' BPM'}</div> */}
       <div className="duration-col">{convertDuration(track.duration_ms)}</div>
       <div
         className={`like-col ${isFavorite ? "favorite" : ""}`}
