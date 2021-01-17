@@ -26,8 +26,9 @@ const App = () => {
 
   return (
     <Fragment key='appfragment'>
+        <img id='Spoogo' src='client/assets/image.png' />
+        <SearchBar key='searchbar1'/>
       <div className="results-grid">
-        <SearchBar key='searchbar1' />
         {resultsRows}
       </div>
     </Fragment>

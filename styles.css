@@ -20,6 +20,7 @@ body {
   border-bottom: 1px solid var(--border-color);
   height: 60px;
   padding: 12px;
+  margin: auto;
 }
 
 .album-col {
@@ -132,7 +133,30 @@ body {
 
   /* ***************THE SEARCH STYLEGUIDE******************* */
   .searchParams {
-    display:grid;
-    grid-template: auto;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-template: 2 / 2;
     max-width: 80%;
+    margin:auto;
+  }
+
+  .sliding {
+    width: 28%;
+    padding-left: 1em;
+  }
+
+  #Spoogo {
+    max-width: 10%;
+    max-height: auto;
+    margin-left: 45%;
+    margin-top: 10rem;
+  }
+
+  .searchbar {
+    margin-left: 37%;
+    padding: 3rem;
+  }
+  input {
+    margin-right:2rem;
   }

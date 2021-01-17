@@ -128,8 +128,6 @@ spotController.refreshToken = (req, res, next) => {
   };
 
 
-console.log('Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')));
-
 spotController.getToken = (req, res, next) => {
   const BasicKey = (Buffer.from(client_id + ':' + client_secret).toString('base64'))
   fetch('https://accounts.spotify.com/api/token', {
@@ -142,13 +140,20 @@ spotController.getToken = (req, res, next) => {
 }
 
 spotController.getRecs = (req, res, next) => {
-  const query = "https://api.spotify.com/v1/recommendations" + req.query;
-  console.log(res.locals.authToken, "AT 142")
+  // console.log(res.locals.authToken)
+  const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
     fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
         .then( results => results.text())
-        .then( parsedData => (console.log(parsedData, "PD 144"), res.locals.track = parsedData, next()))
+        // .then( data => JSON.parse(data))
+        .then( parsedData => (res.locals.queryResults = parsedData, next()))
         .catch( err => next(err));
 };
+
+spotController.getSpecs = (req, res, next) => {
+  // JSON.stringify()
+  console.log(res.locals.queryResults, "testing")
+  return next();
+}
 
 
 module.exports = spotController;
