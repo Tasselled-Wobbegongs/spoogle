@@ -9,14 +9,24 @@ const App = () => {
   const [ favorites, setFavorites ] = useState([]);
 
   const submitSearch = (state) => {
-    const theQueryObj = { seed_artists: state.artistInput };
-    for (let i = 0; i< state.values.length-5; i++) {
-      if(state.searchParameters[i].spotifyName==='_duration_ms'){
-        theQueryObj[`min${state.searchParameters[i].spotifyName}`] = (state.searchParameters[i].min*360);
-        theQueryObj[`max${state.searchParameters[i].spotifyName}`] = (state.searchParameters[i].max*360);         
+    const theQueryObj = { seed_genres: state.genreInput };
+    for (let i = 0; i< state.values.length; i++) {
+      if(state.searchParameters[i].spotifyName==='_tempo') {
+        if(state.values[i][1] !== 220 || state.values[i][0] !== 0){
+          theQueryObj[`min${state.searchParameters[i].spotifyName}`] = (state.values[i][0]);
+          theQueryObj[`max${state.searchParameters[i].spotifyName}`] = (state.values[i][1]);
+        }
       }
-      theQueryObj[`min${state.searchParameters[i].spotifyName}`] = state.searchParameters[i].min;
-      theQueryObj[`max${state.searchParameters[i].spotifyName}`] = state.searchParameters[i].max; 
+      else if(state.searchParameters[i].spotifyName==='_duration_ms'){
+        if(state.values[i][1] !== 15 || state.values[i][0] !== 0){
+          theQueryObj[`min${state.searchParameters[i].spotifyName}`] = (state.values[i][0]*60000);
+          theQueryObj[`max${state.searchParameters[i].spotifyName}`] = (state.values[i][1]*60000);
+        }
+      }
+      else if (state.values[i][1] !== 100 || state.values[i][0] !== 0) {
+        theQueryObj[`min${state.searchParameters[i].spotifyName}`] = state.values[i][0];
+        theQueryObj[`max${state.searchParameters[i].spotifyName}`] = state.values[i][1]; 
+      }
     }
 
     fetch('/apiSpot/rec?'+ querystring.stringify(theQueryObj))
