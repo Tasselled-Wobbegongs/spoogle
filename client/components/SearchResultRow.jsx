@@ -24,12 +24,12 @@ const convertDuration = (durationInMs) => {
   return `${minutes}:${seconds}`;
 }
 
-const SearchResultRow = ({ track, favorites, toggleFavorite }) => {
+const SearchResultRow = ({ track, play, favorites, toggleFavorite }) => {
   const isFavorite = favorites.indexOf(track.id) > -1;
 
   return (
     <div className="results-row">
-      <div className="album-col">
+      <div className="album-col" onClick={() => play(track.uri)}>
         <div>&#9658;</div>
         <img src={getAlbumCover(track)} />
       </div>

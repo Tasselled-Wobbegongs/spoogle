@@ -7,6 +7,7 @@ import querystring from 'query-string'
 const App = () => {
   const [ results, setResults ] = useState([]);
   const [ favorites, setFavorites ] = useState([]);
+  const [ deviceId, setDeviceId ] = useState('');
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -14,9 +15,47 @@ const App = () => {
     script.async = true;
     document.body.appendChild(script);
     window.onSpotifyWebPlaybackSDKReady = () => {
-      console.log('Player is ready');
+      const token = '<INSERT TOKEN HERE>';
+      const player = new Spotify.Player({
+        name: 'Web Playback SDK Quick Start Player',
+        getOAuthToken: cb => { cb(token); }
+      });
+    
+      // Error handling
+      player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      player.addListener('account_error', ({ message }) => { console.error(message); });
+      player.addListener('playback_error', ({ message }) => { console.error(message); });
+    
+      // Playback status updates
+      player.addListener('player_state_changed', state => { console.log(state); });
+    
+      // Ready
+      player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+        setDeviceId(device_id);
+      });
+    
+      // Not Ready
+      player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+      });
+    
+      // Connect to the player!
+      player.connect();
     };
   }, []);
+
+  const play = (trackURI) => {
+    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ uris: [trackURI] }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer <INSERT TOKEN HERE>`
+      },
+    });
+  };
 
   const submitSearch = (state) => {
     const theQueryObj = { seed_genres: state.genreInput };
@@ -59,7 +98,13 @@ const App = () => {
   }
 
   const resultsRows = results.map((track, index) => (
-    <SearchResultRow  key={`searchResult${index}`} track={track} favorites={favorites} toggleFavorite={toggleFavorite} />
+    <SearchResultRow
+      key={`searchResult${index}`}
+      track={track}
+      play={play}
+      favorites={favorites}
+      toggleFavorite={toggleFavorite}
+    />
   ));
 
   return (
