@@ -136,17 +136,19 @@ spotController.getToken = (req, res, next) => {
     body: 'grant_type=client_credentials' })
     .then( data => data.text()) 
     .then( json => JSON.parse(json)) 
-    .then( result => (res.locals.authToken = result.access_token, next()));
+    .then( result => (res.locals.authToken = result.access_token, next()))
+    .catch(err => next(err));
 }
 
 spotController.getRecs = (req, res, next) => {
-  // console.log(res.locals.authToken)
+  console.log(req.query)
   const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
     fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
-        .then( results => results.text())
+        .then( results => results.json())
         // .then( data => JSON.parse(data))
         .then( parsedData => (res.locals.queryResults = parsedData, next()))
         .catch( err => next(err));
+
 };
 
 spotController.getSpecs = (req, res, next) => {

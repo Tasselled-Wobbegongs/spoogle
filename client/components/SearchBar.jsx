@@ -50,7 +50,7 @@ class SearchBar extends Component {
       theQueryObj[`max${this.state.searchParameters[i].spotifyName}`] = this.state.searchParameters[i].max; 
     }
     fetch('/apiSpot/rec?'+ querystring.stringify(theQueryObj))
-      .then(data => data.json())
+      // .then(data => data.json())
       .then(results => console.log(results, 'results'));
   }
 
