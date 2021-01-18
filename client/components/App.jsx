@@ -7,19 +7,27 @@ import querystring from 'query-string'
 const App = () => {
   const [ results, setResults ] = useState([]);
   const [ favorites, setFavorites ] = useState([]);
-  const [ deviceId, setDeviceId ] = useState('');
+  const [ deviceId, setDeviceId ] = useState(undefined);
+  const [ spotifyPlayer, setSpotifyPlayer ] = useState(undefined);
+  const [ token, setToken ] = useState('<INSERT TOKEN HERE>');
+  const [ currentTrack, setCurrentTrack ] = useState(undefined);
+  const [ isPlaying, setIsPlaying ] = useState(false);
 
   useEffect(() => {
+    fetch('/apiSpot/login')
+      .then(data => console.log(data));
+
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
     document.body.appendChild(script);
     window.onSpotifyWebPlaybackSDKReady = () => {
-      const token = '<INSERT TOKEN HERE>';
       const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
+        name: 'Spoogle',
         getOAuthToken: cb => { cb(token); }
       });
+
+      setSpotifyPlayer(player);
     
       // Error handling
       player.addListener('initialization_error', ({ message }) => { console.error(message); });
@@ -27,18 +35,14 @@ const App = () => {
       player.addListener('account_error', ({ message }) => { console.error(message); });
       player.addListener('playback_error', ({ message }) => { console.error(message); });
     
-      // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
-    
-      // Ready
+      // Ready - Ready with Device ID
       player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
         setDeviceId(device_id);
       });
     
-      // Not Ready
+      // Not Ready - Device ID has gone offline
       player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
+        setDeviceId(undefined);
       });
     
       // Connect to the player!
@@ -46,15 +50,29 @@ const App = () => {
     };
   }, []);
 
-  const play = (trackURI) => {
-    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-      method: 'PUT',
-      body: JSON.stringify({ uris: [trackURI] }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer <INSERT TOKEN HERE>`
-      },
-    });
+  const togglePlay = (trackURI) => {
+    if (trackURI !== currentTrack) {
+      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris: [trackURI] }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+        .then(() => {
+          setCurrentTrack(trackURI);
+          setIsPlaying(true);
+        });
+    } else if (isPlaying) {
+      spotifyPlayer.pause().then(() => {
+        setIsPlaying(false);
+      });
+    } else {
+      spotifyPlayer.resume().then(() => {
+        setIsPlaying(true);
+      });
+    }
   };
 
   const submitSearch = (state) => {
@@ -101,7 +119,8 @@ const App = () => {
     <SearchResultRow
       key={`searchResult${index}`}
       track={track}
-      play={play}
+      isPlaying={(track.uri === currentTrack) && isPlaying}
+      togglePlay={togglePlay}
       favorites={favorites}
       toggleFavorite={toggleFavorite}
     />

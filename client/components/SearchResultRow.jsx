@@ -24,20 +24,19 @@ const convertDuration = (durationInMs) => {
   return `${minutes}:${seconds}`;
 }
 
-const SearchResultRow = ({ track, play, favorites, toggleFavorite }) => {
+const SearchResultRow = ({ track, togglePlay, isPlaying, favorites, toggleFavorite }) => {
   const isFavorite = favorites.indexOf(track.id) > -1;
 
   return (
     <div className="results-row">
-      <div className="album-col" onClick={() => play(track.uri)}>
-        <div>&#9658;</div>
-        <img src={getAlbumCover(track)} />
+      <div className="album-col" onClick={() => togglePlay(track.uri)}>
+        {isPlaying ? <div><img src="client/assets/pause.png" /></div> : <div><img src="client/assets/play.png" /></div>}
+        <img src={getAlbumCover(track)} className="album-art" />
       </div>
       <div className="track-col">
         <div>{track.name}</div>
         <div>by {getArtists(track)}</div>
       </div>
-      {/* <div className="bpm-col">{Math.floor(track.audio_features.tempo) + ' BPM'}</div> */}
       <div className="duration-col">{convertDuration(track.duration_ms)}</div>
       <div
         className={`like-col ${isFavorite ? "favorite" : ""}`}
