@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import './../../styles.css';
 import SearchResultRow from './SearchResultRow.jsx';
 import SearchBar from './SearchBar.jsx'
@@ -7,6 +7,16 @@ import querystring from 'query-string'
 const App = () => {
   const [ results, setResults ] = useState([]);
   const [ favorites, setFavorites ] = useState([]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://sdk.scdn.co/spotify-player.js';
+    script.async = true;
+    document.body.appendChild(script);
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      console.log('Player is ready');
+    };
+  }, []);
 
   const submitSearch = (state) => {
     const theQueryObj = { seed_genres: state.genreInput };
