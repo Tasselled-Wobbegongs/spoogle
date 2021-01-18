@@ -9,16 +9,16 @@ import spotifyGenres from './genres';
 export default function FreeSolo(props) {
 
   const genreArr = spotifyGenres["genres"];
-  console.log(genreArr)
 
   return (
     <div style={{ width: 300 }}>
       <Autocomplete
         id="free-solo-demo"
         freeSolo
+        onChange={(event, newValue) => props.onChangeFunc(newValue)}
         options={genreArr}
         renderInput={(params) => (
-          <TextField {...params} label="Search by Genre" margin="normal" variant="outlined" />
+          <TextField {...params} label="Search by Genre" margin="normal" variant="outlined" onChange={props.onChangeFunc} />
         )}
       />
       {/* <Autocomplete

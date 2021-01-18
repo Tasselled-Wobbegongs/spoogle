@@ -20,7 +20,7 @@ export default function Dropdown(props) {
   const [value, setValue] = React.useState([props.parameterObj.min, props.parameterObj.max]);
 
   const handleChange = (event, newValue) => {
-    props.onChangeFunc(event, newValue)
+    props.onChangeFunc(props.id, newValue)
     setValue(newValue);
   };
   return (

@@ -139,8 +139,8 @@ spotController.getToken = (req, res, next) => {
 }
 
 spotController.getRecs = (req, res, next) => {
-  // console.log(res.locals.authToken)
   const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
+  console.log(query)
   fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
     .then(data => data.json())
     .then(data => {
@@ -151,7 +151,6 @@ spotController.getRecs = (req, res, next) => {
 };
 
 spotController.getSpecs = (req, res, next) => {
-  console.log('testing');
   return next();
 }
 
