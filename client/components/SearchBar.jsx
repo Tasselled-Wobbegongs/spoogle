@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import Dropdown from './Dropdown.jsx'
 import querystring from 'query-string'
+import FreeSolo from './GenreDropdown.jsx'
 
 class SearchBar extends Component {
   constructor(props) {
@@ -65,7 +66,9 @@ class SearchBar extends Component {
     return (
       <Fragment>
       {/* <form onSubmit={this.props.handleSubmit}> */}
+ 
       <div className='searchbar'>
+      <FreeSolo />
         <input name='artist' type='text'  onChange={this.artistInputHandler}></input> 
         <button className='theSpoogle' onClick={this.theSearch} >SPOOGLE</button> 
       </div>
@@ -76,6 +79,8 @@ class SearchBar extends Component {
     )
   }
 }
+
+
 
 
 

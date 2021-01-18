@@ -4,10 +4,15 @@ import './../../styles.css';
 import SearchResultRow from './SearchResultRow.jsx';
 import SearchBar from './SearchBar.jsx'
 import sampleTracks from './sampleTracks';
+// import spotifyGenres from './genres';
+
 
 const App = () => {
   const [ results, setResults ] = useState(sampleTracks);
   const [ favorites, setFavorites ] = useState([]);
+
+  // const genreArr = spotifyGenres["genres"];
+  // console.log(genreArr)  
 
   const toggleFavorite = (trackId, isFavorite) => {
     // PLACEHOLDER ONLY, SYNC WITH DATABASE

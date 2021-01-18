@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+
 
 const useStyles = makeStyles({
   root: {
@@ -29,6 +30,7 @@ export default function Dropdown(props) {
         <span className="tooltiptext">{props.parameterObj.description}</span>
       </Typography>
       <Slider
+        color="secondary"
         value={value}
         onChange={handleChange}
         valueLabelDisplay="auto"
@@ -40,6 +42,8 @@ export default function Dropdown(props) {
     </div>
   );
 }
+
+
 
 
 // const dropdown = (props) => {
