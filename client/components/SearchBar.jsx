@@ -1,12 +1,15 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import Dropdown from './Dropdown.jsx'
+import querystring from 'query-string'
+import FreeSolo from './GenreDropdown.jsx'
 
 class SearchBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      artistInput: '',
+      genreInput: '',
+      // artistInput: '',
       values: [[0,100],[0,100],[0,220],[0,100],[0,100],[0,15]],
       searchParameters : [ 
         {spotifyName: "_danceability", displayName: "Danceability",description: "A little side-step or in the mood to salsa?",min: 0,max: 100,},
@@ -18,18 +21,20 @@ class SearchBar extends Component {
       ]
     }
     this.handleChange = this.handleChange.bind(this);
-    this.artistInputHandler = this.artistInputHandler.bind(this);
+    this.genreInputHandler = this.genreInputHandler.bind(this);
   };
 
-   handleChange(event, newValue) {
+   handleChange(id, value) {
     const newValues = this.state.values;
-    newValues[event.target.id]=newValue;
+    newValues[id]=value;
     this.setState({...this.state, values:newValues});
   };
 
-  artistInputHandler(e) {
-    const newInput = e.target.value;
-    return this.setState({...this.state, artistInput: newInput});
+  genreInputHandler(e)  {
+    let newInput;
+    if (e.target) newInput = e.target.value;
+    else newInput = e;
+    return this.setState({...this.state, genreInput: newInput});
   }
 
   render() {
@@ -42,11 +47,12 @@ class SearchBar extends Component {
     return (
       <Fragment>
         <div className='searchbar'>
-          <input name='artist' type='text'  onChange={this.artistInputHandler}></input> 
-          <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
+        <FreeSolo onChangeFunc={this.genreInputHandler} />
+          {/* <input name='artist' type='text'  onChange={this.artistInputHandler}></input>  */}
         </div>
         <div className="searchParams">
         {dropdowns}
+        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
         </div>
       </Fragment>
     )

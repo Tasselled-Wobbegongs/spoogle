@@ -23,7 +23,7 @@ spotController.reqAuth = (req, res, next) => {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  const scope = 'user-read-private user-read-email';
+  const scope = 'streaming user-read-private user-read-email';
 
   const spotifyRedirect = 'https://accounts.spotify.com/authorize?' + querystring.stringify({
     response_type: 'code',
@@ -140,8 +140,8 @@ spotController.getToken = (req, res, next) => {
 }
 
 spotController.getRecs = (req, res, next) => {
-  console.log(req.query)
   const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
+  console.log(query)
   fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
     .then(data => data.json())
     .then(data => {
@@ -152,7 +152,6 @@ spotController.getRecs = (req, res, next) => {
 };
 
 spotController.getSpecs = (req, res, next) => {
-  console.log('testing');
   return next();
 }
 
