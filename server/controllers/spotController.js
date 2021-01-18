@@ -2,7 +2,6 @@ const fetch = require("node-fetch");
 const querystring = require('query-string')
 const { client_id, client_secret, redirect_uri } = require('./spotifysecret')
 
-
 const spotController = {};
 
 const generateRandomString = function(length) {
@@ -143,17 +142,17 @@ spotController.getToken = (req, res, next) => {
 spotController.getRecs = (req, res, next) => {
   console.log(req.query)
   const query = "https://api.spotify.com/v1/recommendations?limit=25&" + querystring.stringify(req.query);
-    fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
-        .then( results => results.json())
-        // .then( data => JSON.parse(data))
-        .then( parsedData => (res.locals.queryResults = parsedData, next()))
-        .catch( err => next(err));
-
+  fetch(query, {headers: {'Authorization': "Bearer " + res.locals.authToken}})
+    .then(data => data.json())
+    .then(data => {
+      res.locals.queryResults = data.tracks;
+      return next();
+    })
+    .catch(err => next(err));
 };
 
 spotController.getSpecs = (req, res, next) => {
-  // JSON.stringify()
-  console.log(res.locals.queryResults, "testing")
+  console.log('testing');
   return next();
 }
 
