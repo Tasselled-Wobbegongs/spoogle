@@ -1,8 +1,11 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import Dropdown from './Dropdown.jsx'
+<<<<<<< HEAD
 import querystring from 'query-string'
 import FreeSolo from './GenreDropdown.jsx'
+=======
+>>>>>>> 6d86841680e99bad5c841deda15946ebf521da91
 
 class SearchBar extends Component {
   constructor(props) {
@@ -21,13 +24,7 @@ class SearchBar extends Component {
     }
     this.handleChange = this.handleChange.bind(this);
     this.artistInputHandler = this.artistInputHandler.bind(this);
-    this.theSearch = this.theSearch.bind(this);
   };
-
-  // convertDuration(minutes, seconds) {
-  //   let millies = ((minutes*60)+seconds)*60;
-  //   return `${millies}`;
-  // }
 
    handleChange(event, newValue) {
     const newValues = this.state.values;
@@ -40,22 +37,6 @@ class SearchBar extends Component {
     return this.setState({...this.state, artistInput: newInput});
   }
 
-  theSearch(e) {
-    const theQueryObj = { seed_artists: this.state.artistInput };
-    for(let i = 0; i<this.state.values.length-5; i++) {
-      if(this.state.searchParameters[i].spotifyName==='_duration_ms'){
-        theQueryObj[`min${this.state.searchParameters[i].spotifyName}`] = (this.state.searchParameters[i].min*360);
-        theQueryObj[`max${this.state.searchParameters[i].spotifyName}`] = (this.state.searchParameters[i].max*360);         
-      }
-      theQueryObj[`min${this.state.searchParameters[i].spotifyName}`] = this.state.searchParameters[i].min;
-      theQueryObj[`max${this.state.searchParameters[i].spotifyName}`] = this.state.searchParameters[i].max; 
-    }
-    fetch('/apiSpot/rec?'+ querystring.stringify(theQueryObj))
-      .then(data => data.json())
-      .then(results => console.log(results, 'results'));
-  }
-
-
   render() {
     const dropdowns = [];
     
@@ -65,6 +46,7 @@ class SearchBar extends Component {
 
     return (
       <Fragment>
+<<<<<<< HEAD
       {/* <form onSubmit={this.props.handleSubmit}> */}
  
       <div className='searchbar'>
@@ -75,14 +57,26 @@ class SearchBar extends Component {
       <div className="searchParams">
       {dropdowns}
       </div>
+=======
+        <div className='searchbar'>
+          <input name='artist' type='text'  onChange={this.artistInputHandler}></input> 
+          <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
+        </div>
+        <div className="searchParams">
+        {dropdowns}
+        </div>
+>>>>>>> 6d86841680e99bad5c841deda15946ebf521da91
       </Fragment>
     )
   }
 }
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> 6d86841680e99bad5c841deda15946ebf521da91
 export default SearchBar;
