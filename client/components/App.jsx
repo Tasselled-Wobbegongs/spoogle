@@ -14,9 +14,6 @@ const App = () => {
   const [ isPlaying, setIsPlaying ] = useState(false);
 
   useEffect(() => {
-    fetch('/apiSpot/login')
-      .then(data => console.log(data));
-
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
