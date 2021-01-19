@@ -9,7 +9,7 @@ const App = () => {
   const [ favorites, setFavorites ] = useState([]);
   const [ deviceId, setDeviceId ] = useState(undefined);
   const [ spotifyPlayer, setSpotifyPlayer ] = useState(undefined);
-  const [ token, setToken ] = useState('BQD0TJkFyPEGgOZV4r8_BpZQQxVi05OkyZMH9dTsNQ1i0VmpK2-Hb3109BIpqNzx6vSE6NYTKxUsn1EuRR8NhGwYIRuvCARwqT7hP84PJICSF7cBSSCkU1eO1Goulbcu95n3vNhxBlP0Ky49o182s2xhHw5LqQyRlfKrgNdbBE5xmm1Qt_lzI38');
+  const [ token, setToken ] = useState('<INSERT TOKEN HERE>');
   const [ currentTrack, setCurrentTrack ] = useState(undefined);
   const [ isPlaying, setIsPlaying ] = useState(false);
 
