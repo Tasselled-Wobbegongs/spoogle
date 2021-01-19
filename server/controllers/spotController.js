@@ -1,5 +1,6 @@
 const fetch = require("node-fetch");
 const querystring = require('query-string')
+const FormData = require('form-data');
 const { client_id, client_secret, redirect_uri } = require('./spotifysecret')
 
 const spotController = {};
@@ -16,7 +17,6 @@ const generateRandomString = function(length) {
   
 
 spotController.reqAuth = (req, res, next) => {
-  console.log('YAY')
   const stateKey = 'spotify_auth_state';
 
   const state = generateRandomString(16);
@@ -35,7 +35,6 @@ spotController.reqAuth = (req, res, next) => {
 
 
   res.locals.spotRedirect = spotifyRedirect;
-  console.log(res.locals.spotRedirect, "URI")
   next();
 };
 
@@ -64,41 +63,52 @@ spotController.getAuth = (req, res, next) => {
           grant_type: 'authorization_code'
         },
         headers: {
-          'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+          'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
         },
         json: true
       };
+      const BasicKey = (Buffer.from(client_id + ':' + client_secret).toString('base64'))
+      fetch('https://accounts.spotify.com/api/token', {
+        method:'POST', 
+        headers:{'Authorization': 'Basic ' + BasicKey, "Content-Type": "application/x-www-form-urlencoded"}, 
+        body: `code=${code}&redirect_uri=${redirect_uri}&grant_type=authorization_code` })
+        .then( data => data.json()) 
+        .then( body => {
+          res.locals.authorization = body;
+          return next();
+        })
+        .catch(err => next(err));
+      
+      // request.post(authOptions, function(error, response, body) {
+      //   if (!error && response.statusCode === 200) {
   
-      request.post(authOptions, function(error, response, body) {
-        if (!error && response.statusCode === 200) {
+      //     const access_token = body.access_token,
+      //         refresh_token = body.refresh_token;
   
-          const access_token = body.access_token,
-              refresh_token = body.refresh_token;
+      //     const options = {
+      //       url: 'https://api.spotify.com/v1/me',
+      //       headers: { 'Authorization': 'Bearer ' + access_token },
+      //       json: true
+      //     };
   
-          const options = {
-            url: 'https://api.spotify.com/v1/me',
-            headers: { 'Authorization': 'Bearer ' + access_token },
-            json: true
-          };
+      //     // use the access token to access the Spotify Web API
+      //     request.get(options, function(error, response, body) {
+      //       console.log(body);
+      //     });
   
-          // use the access token to access the Spotify Web API
-          request.get(options, function(error, response, body) {
-            console.log(body);
-          });
-  
-          // we can also pass the token to the browser to make requests from there
-          res.redirect('/#' +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token
-            }));
-        } else {
-          res.redirect('/#' +
-            querystring.stringify({
-              error: 'invalid_token'
-            }));
-        }
-      });
+      //     // we can also pass the token to the browser to make requests from there
+      //     res.redirect('/#' +
+      //       querystring.stringify({
+      //         access_token: access_token,
+      //         refresh_token: refresh_token
+      //       }));
+      //   } else {
+      //     res.redirect('/#' +
+      //       querystring.stringify({
+      //         error: 'invalid_token'
+      //       }));
+      //   }
+      // });
     }
   }
 
@@ -135,7 +145,8 @@ spotController.getToken = (req, res, next) => {
     body: 'grant_type=client_credentials' })
     .then( data => data.text()) 
     .then( json => JSON.parse(json)) 
-    .then( result => (res.locals.authToken = result.access_token, next()));
+    .then( result => (res.locals.authToken = result.access_token, next()))
+    .catch(err => next(err));
 }
 
 spotController.getRecs = (req, res, next) => {

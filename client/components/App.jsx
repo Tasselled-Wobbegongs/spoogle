@@ -13,6 +13,7 @@ const App = () => {
   const [ currentTrack, setCurrentTrack ] = useState(undefined);
   const [ isPlaying, setIsPlaying ] = useState(false);
 
+
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -88,8 +89,8 @@ const App = () => {
         }
       }
       else if (state.values[i][1] !== 100 || state.values[i][0] !== 0) {
-        theQueryObj[`min${state.searchParameters[i].spotifyName}`] = state.values[i][0];
-        theQueryObj[`max${state.searchParameters[i].spotifyName}`] = state.values[i][1]; 
+        theQueryObj[`min${state.searchParameters[i].spotifyName}`] = state.values[i][0]/100;
+        theQueryObj[`max${state.searchParameters[i].spotifyName}`] = state.values[i][1]/100; 
       }
     }
 
@@ -123,9 +124,17 @@ const App = () => {
     />
   ));
 
+  const testing= () => {
+    // fetch('http://localhost:8080/apiSpot/login', {mode: 'no-cors', headers: {'Access-Control-Allow-Origin':'*'}})
+    // .then ( () => 
+    fetch('http://localhost:3000/apiSpot/login')
+      .then(data => data.json())
+      .then(parsedD => console.log(parsedD));
+  }
   return (
     <Fragment key='appfragment'>
-        <img id='Spoogo' src='client/assets/image.png' />
+        <button onClick={testing}>TESTING</button>
+        <img id="Spoogo" src="client/assets/logo.svg" />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">
         {resultsRows}
