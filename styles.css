@@ -204,3 +204,10 @@ body {
   .theSpoogle:focus {
     outline: none;
   }
+  .LoginLink {
+    display:flex;
+    justify-content: flex-end;  
+}
+  /* input {
+    margin-right:2rem;
+  } */
