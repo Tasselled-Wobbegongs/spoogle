@@ -3,19 +3,20 @@ import './../../styles.css';
 import SearchResultRow from './SearchResultRow.jsx';
 import SearchBar from './SearchBar.jsx'
 import querystring from 'query-string'
+import Cookies from 'universal-cookie'
 
+const cookies = new Cookies();
 const App = () => {
   const [ results, setResults ] = useState([]);
   const [ favorites, setFavorites ] = useState([]);
   const [ deviceId, setDeviceId ] = useState(undefined);
   const [ spotifyPlayer, setSpotifyPlayer ] = useState(undefined);
-  const [ token, setToken ] = useState('<INSERT TOKEN HERE>');
+  const [ token, setToken ] = useState(cookies.get('token'));
   const [ currentTrack, setCurrentTrack ] = useState(undefined);
   const [ isPlaying, setIsPlaying ] = useState(false);
 
 
   useEffect(() => {
-    fetch('http://localhost:3000', {mode: 'no-cors', headers:{'Access-Control-Allow-Origin': '*'}})
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
@@ -75,6 +76,7 @@ const App = () => {
   };
 
   const submitSearch = (state) => {
+    if (!state.genreInput) return;
     const theQueryObj = { seed_genres: state.genreInput };
     for (let i = 0; i< state.values.length; i++) {
       if(state.searchParameters[i].spotifyName==='_tempo') {
@@ -89,6 +91,11 @@ const App = () => {
           theQueryObj[`max${state.searchParameters[i].spotifyName}`] = (state.values[i][1]*60000);
         }
       }
+      else if (state.searchParameters[i].spotifyName==='_popularity' ){
+        theQueryObj[`min${state.searchParameters[i].spotifyName}`] = (state.values[i][0]);
+        theQueryObj[`max${state.searchParameters[i].spotifyName}`] = (state.values[i][1]);
+      }
+      
       else if (state.values[i][1] !== 100 || state.values[i][0] !== 0) {
         theQueryObj[`min${state.searchParameters[i].spotifyName}`] = state.values[i][0]/100;
         theQueryObj[`max${state.searchParameters[i].spotifyName}`] = state.values[i][1]/100; 
@@ -124,18 +131,14 @@ const App = () => {
       toggleFavorite={toggleFavorite}
     />
   ));
-
-  const testing= () => {
-    // fetch('http://localhost:8080/apiSpot/login', {mode: 'no-cors', headers: {'Access-Control-Allow-Origin':'*'}})
-    // .then ( () => 
-    // fetch('http://localhost:3000/apiSpot/login')
-    //   .then(data => data.json())
-    //   .then(parsedD => console.log(parsedD));
-    window.open
+  const login = []
+  if (!cookies.get('token')) {
+    login.push(<div className='LoginLink' ><a  href='http://localhost:3000/apiSpot/login'> Login to Spotify for playback</a></div>)
   }
+
   return (
     <Fragment key='appfragment'>
-        <button onClick={() => {window.open('http://localhost:8080/apiSpot/login', 'login', 'height=400, width=400')}}>TESTING</button>
+        {login}
         <img id="Spoogo" src="client/assets/logo.svg" />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">
