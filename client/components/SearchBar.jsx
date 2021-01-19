@@ -52,8 +52,8 @@ class SearchBar extends Component {
         </div>
         <div className="searchParams">
         {dropdowns}
-        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
         </div>
+        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button>
       </Fragment>
     )
   }
