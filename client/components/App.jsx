@@ -136,7 +136,7 @@ const App = () => {
   return (
     <Fragment key='appfragment'>
         <button onClick={() => {window.open('http://localhost:8080/apiSpot/login', 'login', 'height=400, width=400')}}>TESTING</button>
-        <img id='Spoogo' src='client/assets/image.png' />
+        <img id="Spoogo" src="client/assets/logo.svg" />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">
         {resultsRows}
