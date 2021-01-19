@@ -15,6 +15,7 @@ const App = () => {
 
 
   useEffect(() => {
+    fetch('http://localhost:3000', {mode: 'no-cors', headers:{'Access-Control-Allow-Origin': '*'}})
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
     script.async = true;
@@ -127,13 +128,14 @@ const App = () => {
   const testing= () => {
     // fetch('http://localhost:8080/apiSpot/login', {mode: 'no-cors', headers: {'Access-Control-Allow-Origin':'*'}})
     // .then ( () => 
-    fetch('http://localhost:3000/apiSpot/login')
-      .then(data => data.json())
-      .then(parsedD => console.log(parsedD));
+    // fetch('http://localhost:3000/apiSpot/login')
+    //   .then(data => data.json())
+    //   .then(parsedD => console.log(parsedD));
+    window.open
   }
   return (
     <Fragment key='appfragment'>
-        <button onClick={testing}>TESTING</button>
+        <button onClick={() => {window.open('http://localhost:8080/apiSpot/login', 'login', 'height=400, width=400')}}>TESTING</button>
         <img id='Spoogo' src='client/assets/image.png' />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">
