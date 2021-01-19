@@ -182,6 +182,10 @@ body {
     height: 54px;
   }
   
+  .LoginLink {
+    display:flex;
+    justify-content: flex-end;  
+}
   /* input {
     margin-right:2rem;
   } */

@@ -74,7 +74,7 @@ spotController.getAuth = (req, res, next) => {
         body: `code=${code}&redirect_uri=${redirect_uri}&grant_type=authorization_code` })
         .then( data => data.json()) 
         .then( body => {
-          res.locals.authorization = body;
+          res.locals.authorization = body.access_token;
           return next();
         })
         .catch(err => next(err));
