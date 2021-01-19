@@ -133,7 +133,7 @@ const App = () => {
   }
   return (
     <Fragment key='appfragment'>
-        <button onClick={testing}>TESTING</button>
+        {/* <button onClick={testing}>TESTING</button> */}
         <img id="Spoogo" src="client/assets/logo.svg" />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">

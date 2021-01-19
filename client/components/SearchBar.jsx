@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import Filters from './Filters.jsx'
 import querystring from 'query-string'
 import GenreDrop from './GenreDropdown.jsx'
-// import Dashboard from './Dashboard.jsx'
-import LoginModal from './LoginModal.jsx'
 
 class SearchBar extends Component {
   constructor(props) {
@@ -25,10 +23,6 @@ class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.genreInputHandler = this.genreInputHandler.bind(this);
   };
-
-  // componentDidMount(modalState) {
-  //   SetOpen(true);
-  // }
 
    handleChange(id, value) {
     const newValues = this.state.values;
@@ -55,19 +49,11 @@ class SearchBar extends Component {
       <Fragment>
         <div className='searchbar'>
         <GenreDrop onChangeFunc={this.genreInputHandler} />
-        {/* <Dashboard /> */}
-        <LoginModal />
-          {/* <input name='artist' type='text'  onChange={this.artistInputHandler}></input>  */}
         </div>
         <div className="searchParams">
-<<<<<<< HEAD
         {sliders}
-        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
-=======
-        {dropdowns}
->>>>>>> b57ebb18bbf7cd6758eb1dd7485f39ced018a5d4
         </div>
-        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
+        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >Let's SPOOGLE it!</button> 
       </Fragment>
     )
   }
