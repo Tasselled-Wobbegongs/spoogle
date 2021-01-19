@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import Dropdown from './Dropdown.jsx'
+import Filters from './Filters.jsx'
 import querystring from 'query-string'
-import FreeSolo from './GenreDropdown.jsx'
+import GenreDrop from './GenreDropdown.jsx'
 
 class SearchBar extends Component {
   constructor(props) {
@@ -39,22 +39,21 @@ class SearchBar extends Component {
   }
 
   render() {
-    const dropdowns = [];
+    const sliders = [];
     
     for (let i = 0; i < this.state.searchParameters.length; i += 1) {
-      dropdowns.push(<Dropdown key={'slider'+i} id={i} parameterObj={this.state.searchParameters[i]} values={this.state.values[i]} onChangeFunc={this.handleChange} />);
+      sliders.push(<Filters key={'slider'+i} id={i} parameterObj={this.state.searchParameters[i]} values={this.state.values[i]} onChangeFunc={this.handleChange} />);
     }
 
     return (
       <Fragment>
         <div className='searchbar'>
-        <FreeSolo onChangeFunc={this.genreInputHandler} />
-          {/* <input name='artist' type='text'  onChange={this.artistInputHandler}></input>  */}
+        <GenreDrop onChangeFunc={this.genreInputHandler} />
         </div>
         <div className="searchParams">
-        {dropdowns}
+        {sliders}
         </div>
-        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
+        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >Let's SPOOGLE it!</button> 
       </Fragment>
     )
   }
