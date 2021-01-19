@@ -34,6 +34,7 @@ class SearchBar extends Component {
     let newInput;
     if (e.target) newInput = e.target.value;
     else newInput = e;
+
     return this.setState({...this.state, genreInput: newInput});
   }
 
@@ -52,8 +53,8 @@ class SearchBar extends Component {
         </div>
         <div className="searchParams">
         {dropdowns}
-        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
         </div>
+        <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
       </Fragment>
     )
   }

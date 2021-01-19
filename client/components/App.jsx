@@ -9,7 +9,7 @@ const App = () => {
   const [ favorites, setFavorites ] = useState([]);
   const [ deviceId, setDeviceId ] = useState(undefined);
   const [ spotifyPlayer, setSpotifyPlayer ] = useState(undefined);
-  const [ token, setToken ] = useState('<INSERT TOKEN HERE>');
+  const [ token, setToken ] = useState('BQD0TJkFyPEGgOZV4r8_BpZQQxVi05OkyZMH9dTsNQ1i0VmpK2-Hb3109BIpqNzx6vSE6NYTKxUsn1EuRR8NhGwYIRuvCARwqT7hP84PJICSF7cBSSCkU1eO1Goulbcu95n3vNhxBlP0Ky49o182s2xhHw5LqQyRlfKrgNdbBE5xmm1Qt_lzI38');
   const [ currentTrack, setCurrentTrack ] = useState(undefined);
   const [ isPlaying, setIsPlaying ] = useState(false);
 
@@ -125,7 +125,8 @@ const App = () => {
 
   return (
     <Fragment key='appfragment'>
-        <img id='Spoogo' src='client/assets/image.png' />
+        {/* <img id='Spoogo' src='client/assets/image.png' /> */}
+        <img id="Spoogo" src="client/assets/logo.svg" />
         <SearchBar key='searchbar1' submitSearch={submitSearch} />
       <div className="results-grid">
         {resultsRows}
