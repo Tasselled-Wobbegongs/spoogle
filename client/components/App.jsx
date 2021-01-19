@@ -13,7 +13,6 @@ const App = () => {
   const [ currentTrack, setCurrentTrack ] = useState(undefined);
   const [ isPlaying, setIsPlaying ] = useState(false);
 
-
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -103,12 +102,17 @@ const App = () => {
   }
 
   const toggleFavorite = (trackId, isFavorite) => {
-    // PLACEHOLDER ONLY, SYNC WITH DATABASE
     if (isFavorite) {
-      alert('removing favorite');
-      setFavorites([]);
+      const copy = favorites.slice();
+      for (let i = 0; i < copy.length; i++) {
+        if (trackId === copy[i]) {
+          copy.splice(i, 1);
+          break;
+        }
+      }
+      setFavorites(copy);
+
     } else {
-      alert('adding favorite');
       setFavorites([...favorites, trackId]);
     }
   }
