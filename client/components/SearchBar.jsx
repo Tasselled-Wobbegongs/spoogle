@@ -1,8 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import Dropdown from './Dropdown.jsx'
+import Filters from './Filters.jsx'
 import querystring from 'query-string'
-import FreeSolo from './GenreDropdown.jsx'
+import GenreDrop from './GenreDropdown.jsx'
+// import Dashboard from './Dashboard.jsx'
+import LoginModal from './LoginModal.jsx'
 
 class SearchBar extends Component {
   constructor(props) {
@@ -24,6 +26,10 @@ class SearchBar extends Component {
     this.genreInputHandler = this.genreInputHandler.bind(this);
   };
 
+  // componentDidMount(modalState) {
+  //   SetOpen(true);
+  // }
+
    handleChange(id, value) {
     const newValues = this.state.values;
     newValues[id]=value;
@@ -38,20 +44,22 @@ class SearchBar extends Component {
   }
 
   render() {
-    const dropdowns = [];
+    const sliders = [];
     
     for (let i = 0; i < this.state.searchParameters.length; i += 1) {
-      dropdowns.push(<Dropdown key={'slider'+i} id={i} parameterObj={this.state.searchParameters[i]} values={this.state.values[i]} onChangeFunc={this.handleChange} />);
+      sliders.push(<Filters key={'slider'+i} id={i} parameterObj={this.state.searchParameters[i]} values={this.state.values[i]} onChangeFunc={this.handleChange} />);
     }
 
     return (
       <Fragment>
         <div className='searchbar'>
-        <FreeSolo onChangeFunc={this.genreInputHandler} />
+        <GenreDrop onChangeFunc={this.genreInputHandler} />
+        {/* <Dashboard /> */}
+        <LoginModal />
           {/* <input name='artist' type='text'  onChange={this.artistInputHandler}></input>  */}
         </div>
         <div className="searchParams">
-        {dropdowns}
+        {sliders}
         <button className='theSpoogle' onClick={() => { this.props.submitSearch(this.state) }} >SPOOGLE</button> 
         </div>
       </Fragment>

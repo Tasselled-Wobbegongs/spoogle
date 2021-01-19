@@ -6,7 +6,7 @@ import spotifyGenres from './genres';
 
 
 
-export default function FreeSolo(props) {
+function GenreDrop(props) {
 
   const genreArr = spotifyGenres["genres"];
 
@@ -21,22 +21,8 @@ export default function FreeSolo(props) {
           <TextField {...params} label="Search by Genre" margin="normal" variant="outlined" onChange={props.onChangeFunc} />
         )}
       />
-      {/* <Autocomplete
-        freeSolo
-        id="free-solo-2-demo"
-        disableClearable
-        options={top100Films.map((option) => option.title)}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search input"
-            margin="normal"
-            variant="outlined"
-            InputProps={{ ...params.InputProps, type: 'search' }}
-          />
-        )}
-      /> */}
     </div>
   );
 }
 
+export default GenreDrop;
